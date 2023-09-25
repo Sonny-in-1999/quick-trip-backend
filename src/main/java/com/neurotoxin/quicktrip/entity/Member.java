@@ -1,5 +1,6 @@
 package com.neurotoxin.quicktrip.entity;
 
+import com.neurotoxin.quicktrip.dto.response.MemberResponse;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,10 +18,12 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String name;
 
     @Column(nullable = false)
     private String role;
@@ -34,4 +37,16 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Cart> carts;
 
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
+    public void changeLocation(String location) {
+        this.location = location;
+    }
+
+    public MemberResponse toResponse() {
+        return new MemberResponse(this.email, this.password, this.location, this.name, this.role);
+    }
 }
