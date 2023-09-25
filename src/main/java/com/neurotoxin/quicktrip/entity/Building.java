@@ -1,5 +1,7 @@
 package com.neurotoxin.quicktrip.entity;
 
+import com.neurotoxin.quicktrip.dto.request.BuildingRequest;
+import com.neurotoxin.quicktrip.dto.response.BuildingResponse;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,15 +20,23 @@ public class Building {
     private Long id;
 
     @Column(nullable = false)
-    private String title;
+    private String name;
     @Column(nullable = false)
     private String location;
 
-    @OneToMany(mappedBy = "building")
+    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
     private List<Product> products;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public void editInfo(BuildingRequest request) {
+        this.name = request.getName();
+        this.location = request.getLocation();
+    }
+
+    public BuildingResponse toResponse() {
+        return new BuildingResponse(this.name, this.location);
+    }
 }

@@ -1,5 +1,7 @@
 package com.neurotoxin.quicktrip.entity;
 
+import com.neurotoxin.quicktrip.dto.request.ProductRequest;
+import com.neurotoxin.quicktrip.dto.response.ProductResponse;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,7 +19,7 @@ public class Product {
     private Long id;
 
     @Column(nullable = false)
-    private String title;
+    private String name;
     @Column(nullable = false)
     private Integer price;
     @Column(nullable = false)
@@ -27,5 +29,13 @@ public class Product {
     @JoinColumn(name = "building_id")
     private Building building;
 
+    public void editInfo(ProductRequest request) {
+        this.name = request.getName();
+        this.price = request.getPrice();
+        this.detail = request.getDetail();
+    }
 
+    public ProductResponse toResponse() {
+        return new ProductResponse(this.name, this.price, this.detail);
+    }
 }
