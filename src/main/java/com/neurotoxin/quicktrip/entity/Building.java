@@ -37,6 +37,6 @@ public class Building {
     }
 
     public BuildingResponse toResponse() {
-        return new BuildingResponse(this.name, this.location);
+        return new BuildingResponse(this.id, this.name, this.location);
     }
 }

@@ -19,23 +19,27 @@ public class Product {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String sort;
     @Column(nullable = false)
     private Integer price;
     @Column(nullable = false)
     private String detail;
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private String location;
 
     @ManyToOne
     @JoinColumn(name = "building_id")
     private Building building;
 
     public void editInfo(ProductRequest request) {
-        this.name = request.getName();
+        this.sort = request.getSort();
         this.price = request.getPrice();
         this.detail = request.getDetail();
     }
 
     public ProductResponse toResponse() {
-        return new ProductResponse(this.name, this.price, this.detail);
+        return new ProductResponse(this.id, this.sort, this.price, this.detail, this.name, this.location);
     }
 }

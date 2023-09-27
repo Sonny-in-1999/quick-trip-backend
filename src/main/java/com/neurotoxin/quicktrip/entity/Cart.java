@@ -1,6 +1,7 @@
 package com.neurotoxin.quicktrip.entity;
 
 
+import com.neurotoxin.quicktrip.dto.response.CartResponse;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,4 +23,8 @@ public class Cart {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public CartResponse toResponse() {
+        return new CartResponse(this.id, this.productId);
+    }
 }
