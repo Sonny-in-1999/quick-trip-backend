@@ -47,6 +47,6 @@ public class Member {
     }
 
     public MemberResponse toResponse() {
-        return new MemberResponse(this.email, this.password, this.location, this.name, this.role);
+        return new MemberResponse(this.id, this.email, this.password, this.location, this.name, this.role);
     }
 }

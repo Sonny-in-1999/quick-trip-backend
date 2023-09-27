@@ -43,26 +43,10 @@ public class ClientService {
         return client.toResponse();
     }
 
-    public BuildingResponse getBuilding(Long buildingId) {
-        Building building = validateAndReturnBuildingById(buildingId);
-        return building.toResponse();
-    }
-
-    public ProductResponse getProduct(Long productId) {
-        Product product = validateAndReturnProductById(productId);
-        return product.toResponse();
-    }
-
-    public List<BuildingResponse> getBuildings(Long memberId) {
-        Member member = validateAndReturnMemberById(memberId);
-        List<Building> buildings = member.getBuildings();
-        return buildings.stream().map(Building::toResponse).collect(Collectors.toList());
-    }
-
-    public List<ProductResponse> getProducts(Long buildingId) {
-        Building building = validateAndReturnBuildingById(buildingId);
-        List<Product> products = building.getProducts();
-        return products.stream().map(Product::toResponse).collect(Collectors.toList());
+    @Transactional
+    public void deleteClient(Long clientId) {
+        Member member = validateAndReturnMemberById(clientId);
+        memberRepository.delete(member);
     }
 
     @Transactional
@@ -73,44 +57,94 @@ public class ClientService {
         return savedBuilding.toResponse();
     }
 
-    @Transactional
-    public ProductResponse addProduct(Long buildingId, ProductRequest request) {
+    public BuildingResponse getBuilding(Long memberId, Long buildingId) {
+        Member member = validateAndReturnMemberById(memberId);
         Building building = validateAndReturnBuildingById(buildingId);
-        Product product = request.toEntityAndLinkBuilding(building);
-        Product savedProduct = productRepository.save(product);
-        return savedProduct.toResponse();
+        if (member.getBuildings().contains(building)) {
+            return building.toResponse();
+        }
+        throw new IllegalArgumentException("건물이 존재하지 않거나 권한이 없습니다.");
+    }
+
+    public List<BuildingResponse> getBuildings(Long memberId) {
+        Member member = validateAndReturnMemberById(memberId);
+        List<Building> buildings = member.getBuildings();
+        return buildings.stream().map(Building::toResponse).collect(Collectors.toList());
     }
 
     @Transactional
-    public void editBuilding(Long buildingId, BuildingRequest request) {
+    public void editBuilding(Long memberId, Long buildingId, BuildingRequest request) {
+        Member member = validateAndReturnMemberById(memberId);
         Building building = validateAndReturnBuildingById(buildingId);
-        building.editInfo(request);
+        if (member.getBuildings().contains(building)) {
+            building.editInfo(request);
+        }
+        throw new IllegalArgumentException("건물이 존재하지 않거나 권한이 없습니다.");
     }
 
     @Transactional
-    public void editProduct(Long productId, ProductRequest request) {
+    public void deleteBuilding(Long memberId, Long buildingId) {
+        Member member = validateAndReturnMemberById(memberId);
+        Building building = validateAndReturnBuildingById(buildingId);
+        if (member.getBuildings().contains(building)) {
+            buildingRepository.delete(building);
+        }
+        throw new IllegalArgumentException("건물이 존재하지 않거나 권한이 없습니다.");
+    }
+
+    @Transactional
+    public ProductResponse addProduct(Long memberId, Long buildingId, ProductRequest request) {
+        Member member = validateAndReturnMemberById(memberId);
+        Building building = validateAndReturnBuildingById(buildingId);
+        if (member.getBuildings().contains(building)) {
+            Product product = request.toEntityAndLinkBuilding(building);
+            productRepository.save(product);
+        }
+        throw new IllegalArgumentException("건물이 존재하지 않거나 권한이 없습니다.");
+    }
+
+    public ProductResponse getProduct(Long memberId, Long buildingId, Long productId) {
+        Member member = validateAndReturnMemberById(memberId);
+        Building building = validateAndReturnBuildingById(buildingId);
         Product product = validateAndReturnProductById(productId);
-        product.editInfo(request);
+        if (member.getBuildings().contains(building) && building.getProducts().contains(product)) {
+            return product.toResponse();
+        }
+        throw new IllegalArgumentException("건물이 존재하지 않거나 권한이 없습니다.");
     }
 
-    @Transactional
-    public void deleteBuilding(Long buildingId) {
+    public List<ProductResponse> getProducts(Long memberId, Long buildingId) {
+        Member member = validateAndReturnMemberById(memberId);
         Building building = validateAndReturnBuildingById(buildingId);
-        buildingRepository.delete(building);
+        if (member.getBuildings().contains(building)) {
+            List<Product> products = building.getProducts();
+            return products.stream().map(Product::toResponse).collect(Collectors.toList());
+        }
+        throw new IllegalArgumentException("건물이 존재하지 않거나 권한이 없습니다.");
     }
 
+
     @Transactional
-    public void deleteProduct(Long productId) {
+    public void editProduct(Long memberId, Long buildingId, Long productId, ProductRequest request) {
+        Member member = validateAndReturnMemberById(memberId);
+        Building building = validateAndReturnBuildingById(buildingId);
         Product product = validateAndReturnProductById(productId);
-        Building building = product.getBuilding();
-        building.getProducts().remove(product);
-        productRepository.delete(product);
+        if (member.getBuildings().contains(building) && building.getProducts().contains(product)) {
+            product.editInfo(request);
+        }
+        throw new IllegalArgumentException("건물이 존재하지 않거나 권한이 없습니다.");
     }
 
     @Transactional
-    public void deleteClient(Long clientId) {
-        Member member = validateAndReturnMemberById(clientId);
-        memberRepository.delete(member);
+    public void deleteProduct(Long memberId, Long buildingId, Long productId) {
+        Member member = validateAndReturnMemberById(memberId);
+        Building building = validateAndReturnBuildingById(buildingId);
+        Product product = validateAndReturnProductById(productId);
+        if (member.getBuildings().contains(building) && building.getProducts().contains(product)) {
+            building.getProducts().remove(product);
+            productRepository.delete(product);
+        }
+        throw new IllegalArgumentException("건물이 존재하지 않거나 권한이 없습니다.");
     }
 
     private Product validateAndReturnProductById(Long productId) {

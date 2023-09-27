@@ -13,8 +13,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(force = true)
 public class ProductRequest {
 
-    @NotNull(message = "name은 반드시 입력해야 합니다.")
-    private final String name;
+    @NotNull(message = "분류는 반드시 입력해야 합니다.")
+    private final String sort;
 
     @NotNull(message = "가격은 반드시 입력해야 합니다.")
     private final Integer price;
@@ -24,9 +24,11 @@ public class ProductRequest {
 
     public Product toEntityAndLinkBuilding(Building building) {
         return Product.builder()
-                .name(this.name)
+                .sort(this.sort)
                 .price(this.price)
                 .detail(this.detail)
+                .name(building.getName())
+                .location(building.getLocation())
                 .building(building)
                 .build();
 
