@@ -1,14 +1,15 @@
 package com.neurotoxin.quicktrip.controller;
 
 import com.neurotoxin.quicktrip.dto.Result;
+import com.neurotoxin.quicktrip.dto.request.MemberLocationRequest;
+import com.neurotoxin.quicktrip.dto.request.MemberPasswordRequest;
 import com.neurotoxin.quicktrip.entity.Building;
 import com.neurotoxin.quicktrip.repository.BuildingRepository;
+import com.neurotoxin.quicktrip.service.TouristService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class AppController {
 
     private final BuildingRepository buildingRepository;
+    private final TouristService touristService;
 
     @GetMapping("/buildings/{buildingId}")
     public Result getBuilding(@PathVariable Long buildingId) {
@@ -34,5 +36,15 @@ public class AppController {
     public Result getBuildings() {
         List<Building> allBuildings = buildingRepository.findAll();
         return new Result(allBuildings);
+    }
+
+    @PatchMapping("password/{memberId}")
+    public void changePassword(@PathVariable Long memberId, @RequestBody @Valid MemberPasswordRequest request) {
+        touristService.changePassword(memberId, request);
+    }
+
+    @PatchMapping("location/{memberId}")
+    public void changeLocation(@PathVariable Long memberId, @RequestBody @Valid MemberLocationRequest request) {
+        touristService.changeLocation(memberId, request);
     }
 }
