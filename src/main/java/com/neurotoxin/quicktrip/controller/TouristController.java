@@ -33,6 +33,16 @@ public class TouristController {
         return new Result(tourist);
     }
 
+    @PatchMapping("{memberId}/password")
+    public void changePassword(@PathVariable Long memberId, @RequestBody @Valid MemberPasswordRequest request) {
+        touristService.changePassword(memberId, request);
+    }
+
+    @PatchMapping("{memberId}/location")
+    public void changeLocation(@PathVariable Long memberId, @RequestBody @Valid MemberLocationRequest request) {
+        touristService.changeLocation(memberId, request);
+    }
+
     @DeleteMapping("/{memberId}")
     public void deleteTourist(@PathVariable Long memberId) {
         touristService.deleteTourist(memberId);

@@ -96,6 +96,14 @@ public class ClientController {
     }
 }
 
-
+//    @PatchMapping("{memberId}/password")
+//    public void changePassword(@PathVariable Long memberId, @RequestBody @Valid MemberPasswordRequest request) {
+//        clientService.changePassword(memberId, request);
+//    }
+//
+//    @PatchMapping("{memberId}/location")
+//    public void changeLocation(@PathVariable Long memberId, @RequestBody @Valid MemberLocationRequest request) {
+//        clientService.changeLocation(memberId, request);
+//    }
 
 
