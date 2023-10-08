@@ -36,7 +36,12 @@ public class Building {
         this.location = request.getLocation();
     }
 
+
     public BuildingResponse toResponse() {
-        return new BuildingResponse(this.id, this.name, this.location);
+        return BuildingResponse.builder()
+                .id(this.id)
+                .name(this.name)
+                .location(this.location)
+                .build();
     }
 }

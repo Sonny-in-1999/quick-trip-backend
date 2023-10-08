@@ -20,16 +20,21 @@ public class Member {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String location;
+
+    @Column(nullable = false)
+    private String phoneNumber;
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
     private String role;
-
-    @Column(nullable = false)
-    private String location;
 
     @OneToMany(mappedBy = "member")
     private List<Building> buildings;
@@ -46,7 +51,16 @@ public class Member {
         this.location = location;
     }
 
+
     public MemberResponse toResponse() {
-        return new MemberResponse(this.id, this.email, this.password, this.location, this.name, this.role);
+        return MemberResponse.builder()
+                .id(this.id)
+                .email(this.email)
+                .password(this.password)
+                .location(this.location)
+                .phoneNumber(this.phoneNumber)
+                .name(this.name)
+                .role(this.role)
+                .build();
     }
 }

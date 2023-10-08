@@ -40,6 +40,13 @@ public class Product {
     }
 
     public ProductResponse toResponse() {
-        return new ProductResponse(this.id, this.sort, this.price, this.detail, this.name, this.location);
+        return ProductResponse.builder()
+                .id(this.id)
+                .sort(this.sort)
+                .price(this.price)
+                .detail(this.detail)
+                .name(this.name)
+                .location(this.location)
+                .build();
     }
 }

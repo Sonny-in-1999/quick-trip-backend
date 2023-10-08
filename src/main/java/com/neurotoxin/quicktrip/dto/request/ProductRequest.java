@@ -31,6 +31,5 @@ public class ProductRequest {
                 .location(building.getLocation())
                 .building(building)
                 .build();
-
     }
 }

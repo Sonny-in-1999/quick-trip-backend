@@ -1,10 +1,12 @@
 package com.neurotoxin.quicktrip.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class ProductResponse {
 
     private final Long id;

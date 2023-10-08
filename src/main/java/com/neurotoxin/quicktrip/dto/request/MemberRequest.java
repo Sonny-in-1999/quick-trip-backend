@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor(force = true)
 public class MemberRequest {
 
+    @NotNull
     @Email(message = "올바른 형식의 이메일 주소여야 합니다.")
     private final String email;
 
@@ -25,6 +26,10 @@ public class MemberRequest {
 
     @NotNull(message = "주소는 반드시 입력해야합니다.")
     private final String location;
+
+    @NotNull(message = "연락처는 반드시 입력해야합니다.")
+    @Pattern(regexp = "^(\\d{3}-\\d{4}-\\d{3}|\\d{9})$", message = "올바른 형식의 연락처를 입력하세요. (예: 010-1234-567 또는 012345678)")
+    private final String phoneNumber;
 
     @NotNull(message = "이름은 반드시 입력해야합니다.")
     private final String name;
@@ -37,6 +42,7 @@ public class MemberRequest {
                 .email(this.email)
                 .password(this.password)
                 .location(this.location)
+                .phoneNumber(this.phoneNumber)
                 .name(this.name)
                 .role(role)
                 .build();

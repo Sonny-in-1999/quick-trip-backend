@@ -24,7 +24,11 @@ public class Cart {
     @JoinColumn(name = "member_id")
     private Member member;
 
+
     public CartResponse toResponse() {
-        return new CartResponse(this.id, this.productId);
+        return CartResponse.builder()
+                .id(this.id)
+                .productId(this.productId)
+                .build();
     }
 }
