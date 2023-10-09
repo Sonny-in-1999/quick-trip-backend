@@ -2,6 +2,7 @@ package com.neurotoxin.quicktrip.entity;
 
 import com.neurotoxin.quicktrip.dto.response.MemberResponse;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.List;
@@ -33,9 +34,11 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private String refreshToken;
+
 
     @OneToMany(mappedBy = "member")
     private List<Building> buildings;
@@ -63,5 +66,13 @@ public class Member {
                 .name(this.name)
                 .role(this.role.name())
                 .build();
+    }
+
+    public void passwordEncode(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

@@ -12,6 +12,7 @@ import com.neurotoxin.quicktrip.entity.Role;
 import com.neurotoxin.quicktrip.repository.CartRepository;
 import com.neurotoxin.quicktrip.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +26,15 @@ public class TouristService {
 
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public MemberResponse addTourist(MemberRequest request) {
+        if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
+        }
         Member member = request.toEntity(Role.TOURIST);
+        member.passwordEncode(passwordEncoder);
         Member tourist = memberRepository.save(member);
         return tourist.toResponse();
     }

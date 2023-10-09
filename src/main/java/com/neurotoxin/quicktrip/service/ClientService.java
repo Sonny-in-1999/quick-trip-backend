@@ -14,6 +14,7 @@ import com.neurotoxin.quicktrip.repository.BuildingRepository;
 import com.neurotoxin.quicktrip.repository.MemberRepository;
 import com.neurotoxin.quicktrip.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +30,16 @@ public class ClientService {
     private final MemberRepository memberRepository;
     private final BuildingRepository buildingRepository;
     private final ProductRepository productRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Transactional
     public MemberResponse addClient(MemberRequest request) {
+        if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
+        }
         Member member = request.toEntity(Role.CLIENT);
+        member.passwordEncode(passwordEncoder);
         Member client = memberRepository.save(member);
         return client.toResponse();
     }
