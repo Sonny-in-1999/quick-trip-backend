@@ -9,6 +9,7 @@ import com.neurotoxin.quicktrip.dto.response.ProductResponse;
 import com.neurotoxin.quicktrip.entity.Building;
 import com.neurotoxin.quicktrip.entity.Member;
 import com.neurotoxin.quicktrip.entity.Product;
+import com.neurotoxin.quicktrip.entity.Role;
 import com.neurotoxin.quicktrip.repository.BuildingRepository;
 import com.neurotoxin.quicktrip.repository.MemberRepository;
 import com.neurotoxin.quicktrip.repository.ProductRepository;
@@ -32,7 +33,7 @@ public class ClientService {
 
     @Transactional
     public MemberResponse addClient(MemberRequest request) {
-        Member member = request.toEntity("ROLE_CLIENT");
+        Member member = request.toEntity(Role.CLIENT);
         Member client = memberRepository.save(member);
         return client.toResponse();
     }

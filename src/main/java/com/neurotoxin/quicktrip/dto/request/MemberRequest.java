@@ -1,6 +1,7 @@
 package com.neurotoxin.quicktrip.dto.request;
 
 import com.neurotoxin.quicktrip.entity.Member;
+import com.neurotoxin.quicktrip.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ public class MemberRequest {
     private final String location;
 
     @NotNull(message = "연락처는 반드시 입력해야합니다.")
-    @Pattern(regexp = "^(\\d{3}-\\d{4}-\\d{3}|\\d{9})$", message = "올바른 형식의 연락처를 입력하세요. (예: 010-1234-567 또는 012345678)")
+    @Pattern(regexp = "^(\\d{3}-\\d{4}-\\d{4}|\\d{11})$", message = "올바른 형식의 연락처를 입력하세요. (예: 010-1234-5678 또는 01012345678)")
     private final String phoneNumber;
 
     @NotNull(message = "이름은 반드시 입력해야합니다.")
@@ -37,7 +38,7 @@ public class MemberRequest {
     /**
      * 확장성을 고려해 역할만 매개변수로 받도록 하였습니다
      */
-    public Member toEntity(String role) {
+    public Member toEntity(Role role) {
         return Member.builder()
                 .email(this.email)
                 .password(this.password)

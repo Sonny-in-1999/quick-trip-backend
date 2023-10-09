@@ -34,7 +34,8 @@ public class Member {
     private String name;
 
     @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(mappedBy = "member")
     private List<Building> buildings;
@@ -60,7 +61,7 @@ public class Member {
                 .location(this.location)
                 .phoneNumber(this.phoneNumber)
                 .name(this.name)
-                .role(this.role)
+                .role(this.role.name())
                 .build();
     }
 }

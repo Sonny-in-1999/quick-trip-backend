@@ -8,6 +8,7 @@ import com.neurotoxin.quicktrip.dto.response.CartResponse;
 import com.neurotoxin.quicktrip.dto.response.MemberResponse;
 import com.neurotoxin.quicktrip.entity.Cart;
 import com.neurotoxin.quicktrip.entity.Member;
+import com.neurotoxin.quicktrip.entity.Role;
 import com.neurotoxin.quicktrip.repository.CartRepository;
 import com.neurotoxin.quicktrip.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class TouristService {
 
     @Transactional
     public MemberResponse addTourist(MemberRequest request) {
-        Member member = request.toEntity("ROLE_TOURIST");
+        Member member = request.toEntity(Role.TOURIST);
         Member tourist = memberRepository.save(member);
         return tourist.toResponse();
     }
