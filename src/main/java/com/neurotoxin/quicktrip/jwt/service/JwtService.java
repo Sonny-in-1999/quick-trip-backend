@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -78,8 +79,13 @@ public class JwtService {
      * AccessToken 헤더에 실어서 보내기
      */
     public void sendAccessToken(HttpServletResponse response, String accessToken) {
-        response.setStatus(HttpServletResponse.SC_OK);
+        Cookie accessCookie = new Cookie(accessHeader, accessToken);
 
+        accessCookie.setHttpOnly(true);
+        accessCookie.setPath("/");
+
+        response.addCookie(accessCookie);
+        response.setStatus(HttpServletResponse.SC_OK);
         response.setHeader(accessHeader, accessToken);
         log.info("재발급된 Access Token : {}", accessToken);
     }
@@ -88,6 +94,16 @@ public class JwtService {
      * AccessToken + RefreshToken 헤더에 실어서 보내기
      */
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
+        Cookie accessCookie = new Cookie(accessHeader, accessToken);
+        Cookie refreshCookie = new Cookie(refreshHeader, refreshToken);
+
+        accessCookie.setHttpOnly(true);
+        accessCookie.setPath("/");
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setPath("/");
+
+        response.addCookie(accessCookie);
+        response.addCookie(refreshCookie);
         response.setStatus(HttpServletResponse.SC_OK);
 
         setAccessTokenHeader(response, accessToken);
