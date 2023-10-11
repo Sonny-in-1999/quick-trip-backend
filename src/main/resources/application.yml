@@ -1,15 +1,21 @@
 spring:
-  h2:
-    console:
-      enabled: true
-  #      settings:
-  #        web-allow-others: true
+  # Upstash 사용
+  redis:
+    host: apn1-fond-shepherd-34986.upstash.io
+    port: 34986
+    password: 1b4182e83df34170963982fb1ef800ac
 
+# swagger 에러 해결
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  # PlanetScale 사용
   datasource:
-    url: jdbc:h2:tcp://localhost/~/quicktrip
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://gcp.connect.psdb.cloud:3306/quick-trip-database
+    username: sgjap1m869d408j0wx0a
+    password: pscale_pw_1JNLcefKm6C2Isdnvu8MFq7ZK7k6LrLN2gLzdiZDwXE
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:

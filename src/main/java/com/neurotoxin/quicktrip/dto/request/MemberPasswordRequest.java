@@ -1,5 +1,6 @@
 package com.neurotoxin.quicktrip.dto.request;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor(force = true)
 public class MemberPasswordRequest {
 
+    @ApiModelProperty(value="비밀번호는 8자 이상 15자 이내여야 하며, 특수문자와 대문자가 1개 이상 포함되어야 합니다", example = "1234Hello!", required = true)
     @NotNull(message = "비밀번호는 반드시 입력해야합니다.")
     @Size(min = 8, max = 15, message = "비밀번호는 8자 이상 15자 이내여야 합니다.")
     @Pattern(regexp = ".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*", message = "특수 문자와 대문자가 1개 이상 포함되어야 합니다.")

@@ -21,6 +21,7 @@ public class Building {
 
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String location;
 

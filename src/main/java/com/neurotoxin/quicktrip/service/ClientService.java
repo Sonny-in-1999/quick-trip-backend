@@ -1,8 +1,6 @@
 package com.neurotoxin.quicktrip.service;
 
-import com.neurotoxin.quicktrip.dto.request.BuildingRequest;
-import com.neurotoxin.quicktrip.dto.request.MemberRequest;
-import com.neurotoxin.quicktrip.dto.request.ProductRequest;
+import com.neurotoxin.quicktrip.dto.request.*;
 import com.neurotoxin.quicktrip.dto.response.BuildingResponse;
 import com.neurotoxin.quicktrip.dto.response.MemberResponse;
 import com.neurotoxin.quicktrip.dto.response.ProductResponse;
@@ -53,6 +51,19 @@ public class ClientService {
     public void deleteClient(Long clientId) {
         Member member = validateAndReturnMemberById(clientId);
         memberRepository.delete(member);
+    }
+
+    @Transactional
+    public void changePassword(Long memberId, MemberPasswordRequest request) {
+        Member member = validateAndReturnMemberById(memberId);
+        member.changePassword(request.getPassword());
+        member.passwordEncode(passwordEncoder);
+    }
+
+    @Transactional
+    public void changeLocation(Long memberId, MemberLocationRequest request) {
+        Member member = validateAndReturnMemberById(memberId);
+        member.changeLocation(request.getLocation());
     }
 
     @Transactional
